@@ -36,9 +36,9 @@ function createTask(title: string, status: string, dueDate: string): Task {
   return task;
 }
 
-function getTasks(filter?: any): Task[] {
-  if (filter?.status) {
-    return tasks.filter(t => t.status === filter?.status);
+function getTasks(status?: any): Task[] {
+  if (status) {
+    return tasks.filter(t => t.status === status);
   }
   return tasks;
 }
@@ -71,18 +71,21 @@ try {
     createTask('', 'todo', new Date().toISOString());
     throw new Error('Validation failed to reject empty title');
   } catch {}
+  assert(tasks.length === initialCount, 'Did not create task with no title');
 
   // Should fail with invalid status
   try {
     createTask('Bad Status', 'unknown', new Date().toISOString());
     throw new Error('Validation failed to reject bad status');
   } catch {}
+  assert(tasks.length === initialCount, 'Did not create task with bad status');
 
   // Should fail with past due date
   try {
     createTask('Past Due', 'todo', new Date(Date.now() - 86400000).toISOString());
     throw new Error('Validation failed to reject past due date');
   } catch {}
+  assert(tasks.length === initialCount, 'Did not create task with past due date');
 
   // Should create a valid task
   const task = createTask('Do something', 'in-progress', new Date(Date.now() + 86400000).toISOString());
@@ -106,6 +109,6 @@ try {
   assert(initialTask.length === 1 && initialTask[0].title === 'Initial Task', 'Filter by title works');
 
   console.log('\n🎉 All tests passed!');
-} catch (e) {
+} catch (e: any) {
   console.error(e.message);
 }
