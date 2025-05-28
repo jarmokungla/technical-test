@@ -21,7 +21,6 @@ Implement a simple rate limiter in Node.js using only native modules. Limit to 3
 
 API signature:
 
-// Express-style middleware
 function rateLimiter(req, res, next) {
   // Your code
 }
